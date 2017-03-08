@@ -13,17 +13,18 @@
 + 所需环境nodejs，[nodejs下载地址](https://pan.baidu.com/s/1geLgpqz)，安装过程勾选`add path to system`就不用手动添加安装目录到系统环境变量了
 
 + 克隆或者下载项目
-这里最好安装cnpm，npm比较慢，不清楚你可以参考[淘宝cnpm](http://npm.taobao.org/)
-```
-git clone https://github.com/Andyliwr/gulp-activityPage.git
-cnpm install -g gulp
-cnpm install
-```
-想要让chrome支持实时刷新，需要一个chrome插件，[点击这儿去下载插件](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei),在项目运行时，这个chrome插件中间的空心圆点变成了实心就表示项目已经运行成功了。
+	这里最好安装cnpm，npm比较慢，不清楚你可以参考[淘宝cnpm](http://npm.taobao.org/)
+	```
+	git clone https://github.com/Andyliwr/gulp-activityPage.git
+	cnpm install -g gulp
+	cnpm install
+	```
+	想要让chrome支持实时刷新，需要一个chrome插件，[点击这儿去下载插件](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei),在项目运行时，这个chrome插件中间的空心圆点变成了实心就表示项目已经运行成功了。
+
 ![image02](http://think2011.qiniudn.com/gulp-livereload2.gif)
 
 + 运行项目
-直接cmd到当前项目下输入`gulp serve`，gulp会自动帮你打开`localhost:8080`，运行项目下的`index.html`,然后你修改文件就会自动刷新了。所有压缩和编译后的文件都放在了`dist`目录下，提测的时候直接把这个目录上传就好了
+	直接cmd到当前项目下输入`gulp serve`，gulp会自动帮你打开`localhost:8080`，运行项目下的`index.html`,然后你修改文件就会自动刷新了。所有压缩和编译后的文件都放在了`dist`目录下，提测的时候直接把这个目录上传就好了
 
 + 另一个命令
-执行`gulp build`会将原来生成的文件删除并重新生产一遍
+	执行`gulp build`会将原来生成的文件删除并重新生产一遍
