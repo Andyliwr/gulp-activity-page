@@ -21,7 +21,7 @@
 	```
 	想要让chrome支持实时刷新，需要一个chrome插件，[点击这儿去下载插件](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei),在项目运行时，这个chrome插件中间的空心圆点变成了实心就表示项目已经运行成功了。
 
-![image02](http://think2011.qiniudn.com/gulp-livereload2.gif)
+	![image02](http://think2011.qiniudn.com/gulp-livereload2.gif)
 
 + 运行项目
 	直接cmd到当前项目下输入`gulp serve`，gulp会自动帮你打开`localhost:8080`，运行项目下的`index.html`,然后你修改文件就会自动刷新了。所有压缩和编译后的文件都放在了`dist`目录下，提测的时候直接把这个目录上传就好了
