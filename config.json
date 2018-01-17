@@ -2,15 +2,16 @@
  	"project" : "test", 	
  	"localServer" : {
  		"host" : "localhost",
- 		"port" : "8082"
+ 		"port" : "3000"
  	},
  	"tinypngApi": "Q0Q_7x6ppzaVY00KSOu1vc5-FVKyN20J",
  	"upload" : {
-    "protocol": "ftp",
- 		"host" : "qxw1098890145.my3w.com",
- 		"user" : "qxw1098890145",
- 		"password" : "121960425ftp",
- 		"port" : "21",
- 		"remotePath" :"/test"
+		"use": false,
+    "protocol": "sftp",
+ 		"host" : "192.168.47.227",
+ 		"user" : "lidikang",
+ 		"password" : "lidikang",
+ 		"port" : "22",
+ 		"remotePath" :"/home/lidikang/test_page/"
  	}
  }
