@@ -48,7 +48,8 @@ gulp.task('styles', function () {
 		.pipe(livereload())
 })
 
-gulp.task('scripts', function () {
+// 只有eslint通过了才经行script打包
+gulp.task('scripts', ['lint'], function () {
 	return gulp.src('src/scripts/**/*.js')
 		.pipe(debug({
 			title: 'js打包:'
@@ -94,7 +95,7 @@ gulp.task('clean', function () {
 	}).pipe(clean())
 })
 
-gulp.task('webserver', function () {
+gulp.task('webserver', ['html', 'images', 'styles', 'scripts'], function () {
 	return gulp.src('./dist/') // 服务器目录（./代表根目录）
 		.pipe(webserver({
 			host: config.localServer.host,
@@ -114,12 +115,6 @@ gulp.task('lint', () => {
 		// To have the process exit with an error code (1) on
 		// lint error, return the stream and pipe to failAfterError last.
 		.pipe(eslint.failAfterError())
-		.pipe(gulp.start('scripts', function () {
-			if (config.upload.use) {
-				foal.run(upload(file.path), cb)
-			}
-			livereload.changed(file.path)
-		}))
 })
 
 gulp.task('watch', function () {
@@ -211,10 +206,6 @@ foal.task('upload', function (filePath, cb) {
 
 // 默认任务
 gulp.task('default', function () {
-	gulp.start('styles')
-	gulp.start('lint')
-	gulp.start('images')
-	gulp.start('html')
 	gulp.start('webserver')
 	gulp.start('watch')
 })
