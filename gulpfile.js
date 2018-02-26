@@ -27,7 +27,7 @@ var reload = browserSync.reload
 
 
 gulp.task('styles', function () {
-	return gulp.src('src/styles/**/*.scss') //会编译styles目录下的以scss结尾的scss文件
+	return gulp.src(['src/styles/**/*.scss', '!src/styles/**/_*.scss']) //会编译styles目录下的以scss结尾的scss文件
 		.pipe(debug({
 			title: 'CSS packing:'
 		}))
@@ -51,7 +51,7 @@ gulp.task('styles', function () {
 
 // 只有eslint通过了才经行script打包
 gulp.task('scripts', ['lint'], function () {
-	return gulp.src('src/scripts/**/*.js')
+	return gulp.src('src/scripts/**/*.js', '!src/scripts/**/_*.js')
 		.pipe(debug({
 			title: 'JS packing:'
 		}))
