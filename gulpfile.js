@@ -5,6 +5,7 @@ const autoprefixer = require('gulp-autoprefixer')
 const minifycss = require('gulp-minify-css')
 const cssBeautify = require('gulp-cssbeautify')
 const eslint = require('gulp-eslint')
+const babel = require('gulp-babel')
 const uglify = require('gulp-uglify')
 const tinypng = require('gulp-tinypng')
 // png 深度压缩
@@ -53,6 +54,10 @@ gulp.task('scripts', ['lint'], function () {
 	return gulp.src('src/scripts/**/*.js')
 		.pipe(debug({
 			title: 'JS packing:'
+		}))
+		.pipe(babel({
+			presets: ['es2015'],
+			plugins: ['transform-runtime']
 		}))
 		.pipe(gulp.dest('dist/scripts/'))
 		.pipe(rename({
