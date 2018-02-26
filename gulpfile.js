@@ -69,6 +69,12 @@ gulp.task('images', function () {
 		.pipe(reload({stream: true}))
 })
 
+gulp.task('fonts', function () {
+	return gulp.src('src/fonts/**')
+		.pipe(gulp.dest('dist/fonts'))
+		.pipe(reload({stream: true}))
+})
+
 // 压缩图片 - tinypng
 gulp.task('tinypng', function () {
 	return gulp.src('src/images/**/*.{png,jpg,jpeg}')
@@ -104,6 +110,7 @@ gulp.task('webserver', function() {
 	})
 	gulp.watch('src/styles/**/*.scss', ['styles'])
 	gulp.watch('src/images/**', ['images'])
+	gulp.watch('src/fonts/**', ['fonts'])
 	gulp.watch('src/scripts/**/*.js', ['scripts'])
 	gulp.watch('src/**/*.html', ['html'])
 })
@@ -169,6 +176,11 @@ foal.task('upload', function (filePath, cb) {
 
 // 默认任务
 gulp.task('default', function () {
+	gulp.start('styles')
+	gulp.start('scripts')
+	gulp.start('images')
+	gulp.start('fonts')
+	gulp.start('html')
 	gulp.start('webserver')
 })
 
@@ -176,6 +188,7 @@ gulp.task('build', ['clean'], function () {
 	gulp.start('styles')
 	gulp.start('scripts')
 	gulp.start('images')
+	gulp.start('fonts')
 	gulp.start('html')
 })
 
@@ -184,6 +197,7 @@ gulp.task('build2', ['clean'], function () {
 	gulp.start('styles')
 	gulp.start('scripts')
 	gulp.start('tinypng')
+	gulp.start('fonts')
 	gulp.start('html')
 	gulp.start('zip')
 })
