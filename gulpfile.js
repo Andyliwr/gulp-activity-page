@@ -14,21 +14,21 @@ const clean = require('gulp-clean')
 const concat = require('gulp-concat')
 const notify = require('gulp-notify')
 const cache = require('gulp-cache')
-const livereload = require('gulp-livereload')
-const webserver = require('gulp-webserver')
 const debug = require('gulp-debug')
+const browserSync = require('browser-sync').create()
 const sftp = require('gulp-sftp')
 const ftp = require('gulp-ftp')
 const foal = require('gulp-foal')(global) // task传参数
 const watch = require('gulp-watch')
-const exec = require('child_process').exec;
 // 配置文件
 const config = require('./config.json')
+var reload = browserSync.reload
+
 
 gulp.task('styles', function () {
 	return gulp.src('src/styles/**/*.scss') //会编译styles目录下的以scss结尾的scss文件
 		.pipe(debug({
-			title: 'css打包:'
+			title: 'CSS packing:'
 		}))
 		.pipe(sass({
 			style: 'expanded'
@@ -45,14 +45,14 @@ gulp.task('styles', function () {
 		}))
 		.pipe(minifycss())
 		.pipe(gulp.dest('dist/styles/'))
-		.pipe(livereload())
+		.pipe(reload({stream: true}))
 })
 
 // 只有eslint通过了才经行script打包
 gulp.task('scripts', ['lint'], function () {
 	return gulp.src('src/scripts/**/*.js')
 		.pipe(debug({
-			title: 'js打包:'
+			title: 'JS packing:'
 		}))
 		.pipe(gulp.dest('dist/scripts/'))
 		.pipe(rename({
@@ -60,20 +60,20 @@ gulp.task('scripts', ['lint'], function () {
 		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('dist/scripts/'))
-		.pipe(livereload())
+		.pipe(reload({stream: true}))
 })
 
 gulp.task('images', function () {
 	return gulp.src('src/images/**')
 		.pipe(gulp.dest('dist/images'))
-		.pipe(livereload())
+		.pipe(reload({stream: true}))
 })
 
 // 压缩图片 - tinypng
 gulp.task('tinypng', function () {
 	return gulp.src('src/images/**/*.{png,jpg,jpeg}')
 		.pipe(debug({
-			title: 'tinypng压缩:'
+			title: 'tinypng:'
 		}))
 		.pipe(tinypng(config.tinypngApi))
 		.pipe(gulp.dest('./dist/images'))
@@ -82,10 +82,10 @@ gulp.task('tinypng', function () {
 gulp.task('html', function () {
 	return gulp.src('src/*.html')
 		.pipe(debug({
-			title: 'html打包:'
+			title: 'HTML packing:'
 		}))
 		.pipe(gulp.dest('dist/'))
-		.pipe(livereload())
+		.pipe(reload({stream: true}))
 })
 
 // 清除所有的生成文件
@@ -95,68 +95,31 @@ gulp.task('clean', function () {
 	}).pipe(clean())
 })
 
-gulp.task('webserver', ['html', 'images', 'styles', 'scripts'], function () {
-	return gulp.src('./dist/') // 服务器目录（./代表根目录）
-		.pipe(webserver({
-			host: config.localServer.host,
-			port: config.localServer.port,
-			open: true, // 服务器启动时自动打开网页
-			directoryListing: false,
-			auto: false
-		}))
+// 静态服务器
+gulp.task('webserver', function() {
+	browserSync.init({
+		server: {
+			baseDir: './dist/'
+		}
+	})
+	gulp.watch('src/styles/**/*.scss', ['styles'])
+	gulp.watch('src/images/**', ['images'])
+	gulp.watch('src/scripts/**/*.js', ['scripts'])
+	gulp.watch('src/**/*.html', ['html'])
 })
 
 gulp.task('lint', () => {
 	return gulp.src(['src/scripts/**/*.js', '!node_modules/**', '!dist/**'])
 		.pipe(eslint())
-		// eslint.format() outputs the lint results to the console.
-		// Alternatively use eslint.formatEach() (see Docs).
 		.pipe(eslint.format())
-		// To have the process exit with an error code (1) on
-		// lint error, return the stream and pipe to failAfterError last.
 		.pipe(eslint.failAfterError())
-})
-
-gulp.task('watch', function () {
-	livereload.listen()
-	// 监听 .scss
-	watch('src/styles/**/*.scss', function (file, cb) {
-		gulp.start('styles', function () {
-			if (config.upload.use) {
-				foal.run(upload(path.join(file.path)), cb)
-			}
-			livereload.changed(file.path)
-		})
-	})
-	// 监听 .js
-	watch('src/scripts/**/*.js', function (file, cb) {
-		gulp.start('lint')
-	})
-	// 监听 images
-	watch('src/images/**', function (file, cb) {
-		gulp.start('images', function () {
-			if (config.upload.use) {
-				foal.run(upload(file.path), cb)
-			}
-			livereload.changed(file.path)
-		})
-	})
-	// 监听 html
-	watch('src/*.html', function (file, cb) {
-		gulp.start('html', function () {
-			if (config.upload.use) {
-				foal.run(upload(path.join(file.path)), cb)
-			}
-			livereload.changed(file.path)
-		})
-	})
 })
 
 // 打包文件
 gulp.task('zip', function () {
 	function checkTime(i) {
 		if (i < 10) {
-			i = "0" + i
+			i = '0' + i
 		}
 		return i
 	}
@@ -177,7 +140,7 @@ gulp.task('zip', function () {
 
 // 上传到远程服务器任务，使用foal定义上传任务
 foal.task('upload', function (filePath, cb) {
-	if (config.upload.protocol === "ftp" || config.upload.protocol === "Ftp" || config.upload.protocol === "FTP") {
+	if (config.upload.protocol === 'ftp' || config.upload.protocol === 'Ftp' || config.upload.protocol === 'FTP') {
 		return gulp.src(filePath)
 			.pipe(debug({
 				title: 'ftp上传:'
@@ -189,7 +152,7 @@ foal.task('upload', function (filePath, cb) {
 				port: config.upload.port,
 				remotePath: config.upload.remotePath
 			}))
-	} else if (config.upload.protocol === "sftp" || config.upload.protocol === "Sftp" || config.upload.protocol === "SFTP") {
+	} else if (config.upload.protocol === 'sftp' || config.upload.protocol === 'Sftp' || config.upload.protocol === 'SFTP') {
 		return gulp.src(filePath)
 			.pipe(debug({
 				title: 'sftp上传:'
@@ -207,7 +170,6 @@ foal.task('upload', function (filePath, cb) {
 // 默认任务
 gulp.task('default', function () {
 	gulp.start('webserver')
-	gulp.start('watch')
 })
 
 gulp.task('build', ['clean'], function () {
