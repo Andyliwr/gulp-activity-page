@@ -51,13 +51,13 @@ gulp.task('styles', function () {
 
 // 只有eslint通过了才经行script打包
 gulp.task('scripts', ['lint'], function () {
-	return gulp.src('src/scripts/**/*.js', '!src/scripts/**/_*.js')
+	return gulp.src('src/scripts/**/*.js')
 		.pipe(debug({
 			title: 'JS packing:'
 		}))
 		.pipe(babel({
 			presets: ['es2015'],
-			plugins: ['transform-runtime']
+			// plugins: ['transform-runtime']
 		}))
 		.pipe(gulp.dest('dist/scripts/'))
 		.pipe(rename({
