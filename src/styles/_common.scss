@@ -1,0 +1,147 @@
+@import './_variable.scss';
+// 公共css
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  // overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+p,
+div,
+button,
+span,
+label,
+ul,
+li,
+img,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+}
+
+img {
+  width: 100%;
+}
+
+// 数字字体
+@font-face {
+  font-family: 'numberfont';
+  src: url('../fonts/DIN-Bold.otf');
+}
+
+// 设置字体大小
+@mixin font-size($font-size) {
+  font-size: $font-size / 2;
+  [data-dpr='2'] & {
+    font-size: $font-size;
+  }
+  [data-dpr='3'] & {
+    font-size: $font-size * 2;
+  }
+}
+
+// 设置背景图片
+@mixin background-img($url) {
+  background: url($url+'@2x.png') no-repeat center center;
+  background-size: 100% 100%;
+  [data-dpr='2'] & {
+    background: url($url+'@2x.png') no-repeat center center;
+    background-size: 100% 100%;
+  }
+  [data-dpr='3'] & {
+    background: url($url+'@3x.png') no-repeat center center;
+    background-size: 100% 100%;
+  }
+}
+
+@mixin background-img-auto($url) {
+  background: url($url+'@2x.png') no-repeat center center;
+  background-size: auto 100%;
+  [data-dpr='2'] & {
+    background: url($url+'@2x.png') no-repeat center center;
+    background-size: auto 100%;
+  }
+  [data-dpr='3'] & {
+    background: url($url+'@3x.png') no-repeat center center;
+    background-size: auto 100%;
+  }
+}
+
+// 1px边框
+@mixin bor_t($borDefault) {
+  border-top: 1px solid $borDefault;
+}
+@mixin bor_b($borDefault) {
+  border-bottom: 1px solid $borDefault;
+}
+@mixin bor_l($borDefault) {
+  border-left: 1px solid $borDefault;
+}
+@mixin bor_r($borDefault) {
+  border-right: 1px solid $borDefault;
+}
+@mixin bor_tb($borDefault) {
+  border-top: 1px solid $borDefault;
+  border-bottom: 1px solid $borDefault;
+}
+@mixin bor_all($borDefault, $borDefaultRadius) {
+  border: none;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    box-sizing: border-box;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    transform: scale(0.5);
+    transform-origin: left top;
+    border: 1px solid $borDefault;
+    border-radius: $borDefaultRadius;
+  }
+}
+
+//单行文本溢出
+@mixin ellipsis($w: auto) {
+  width: $w;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+//多行文本溢出
+@mixin ellipsisLn($line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+}
+
+// 设置渐变的函混合
+@mixin gradient($from, $to) {
+  background: $from; /* Old browsers */
+  background: -moz-linear-gradient(top, $from 0%, $to 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, $from 0%, $to 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, $from 0%, $to 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="'" + $from + "'", endColorstr="'" + $to + "'",GradientType=0 ); /* IE6-9 */
+}
+
+// pxToRem函数
+@function px2rem($px) {
+  @return $px/75 + rem;
+}
