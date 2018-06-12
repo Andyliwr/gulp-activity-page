@@ -1,12 +1,3 @@
-/*
-*Dialog
-*日期：2017-3-24
-*config参数说明
-*---------
-*title:标题
-*message:内容
-*buttons:按钮列表
-*/
 (function($) {
   function Dialog(config) {
     this.config = {
