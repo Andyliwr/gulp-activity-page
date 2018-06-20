@@ -38,7 +38,11 @@ gulp.task('styles', function() {
         style: 'expanded'
       }).on('error', sass.logError)
     )
-    .pipe(autoprefixer('ios 6', 'android 4'))
+    .pipe(autoprefixer({
+        browsers: ['last 20 versions'],
+        cascade: true
+      })
+    )
     .pipe(
       cssBeautify({
         indent: '  ',
