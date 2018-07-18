@@ -63,3 +63,9 @@
 - 使用`browser-sync`替换`liveload`，这样运行的时候不用再额安装 chrome 自动刷新插件也能实现自动刷新 ---- 2018 年 04 月 22 日
 - 将`gulp`命令加入到`package.json`的`script`字段中，这样运行的时候就不需要全局安装`gulp`了 ---- 2018 年 06 月 08 日
 - 加入一些`js`组件以及`scss` ---- 2018 年 06 月 08 日
+- README加入常见问题
+
+### 常见问题
++ 安装依赖报错：`Error: ENOENT: no such file or directory, scandir 'xxx\node_modules\_node-sass@4.9.2@node-sass\vendor'`
+
+  一般是`node-sass`安装失败了，在终端中输入`npm rebuild node-sass`重新构建`node-sass`
