@@ -38,7 +38,8 @@ gulp.task('styles', function() {
         style: 'expanded'
       }).on('error', sass.logError)
     )
-    .pipe(autoprefixer({
+    .pipe(
+      autoprefixer({
         browsers: ['last 20 versions'],
         cascade: true
       })
@@ -63,8 +64,10 @@ gulp.task('styles', function() {
 
 // 只有eslint通过了才经行script打包
 gulp.task('scripts', ['lint'], function() {
+  // 将src下载*.min.js直接打包到dist目录，不经过eslint和uglify
+  gulp.src('src/scripts/**/*.min.js').pipe(gulp.dest('dist/scripts/'));
   return gulp
-    .src('src/scripts/**/*.js')
+    .src(['src/scripts/**/*.js', '!src/scripts/**/*.min.js'])
     .pipe(
       debug({
         title: 'JS packing:'
